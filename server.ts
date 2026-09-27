@@ -15,7 +15,7 @@ const PORT = 3000;
 
 app.use(express.json({ limit: '10mb' }));
 
-// Lazy GoogleGenAI initialization
+
 let genAIInstance: GoogleGenAI | null = null;
 function getGenAI(): GoogleGenAI | null {
   if (!genAIInstance) {
@@ -36,7 +36,7 @@ function getGenAI(): GoogleGenAI | null {
   return genAIInstance;
 }
 
-// In-Memory Simulation State
+
 let activeNodes = [
   { id: 'node-fw-01', name: 'Edge-Firewall-Primary', type: 'firewall', status: 'healthy', ip: '192.168.1.1', score: 96 },
   { id: 'node-router-01', name: 'Core-Router-Gateway', type: 'router', status: 'healthy', ip: '192.168.1.254', score: 92 },
@@ -51,9 +51,7 @@ let systemRiskScore = 64;
 let activeAlertsCount = 4;
 let totalSimulationsRun = 12;
 
-// API Routes
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -64,12 +62,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Get Node Status
+
 app.get('/api/nodes', (req, res) => {
   res.json({ nodes: activeNodes, riskScore: systemRiskScore });
 });
 
-// Node Action (Isolate, Scan, Patch, Restore)
+
 app.post('/api/nodes/:id/action', (req, res) => {
   const { id } = req.params;
   const { action } = req.body;
@@ -106,12 +104,11 @@ app.post('/api/nodes/:id/action', (req, res) => {
   });
 });
 
-// Trigger Cyber Attack Simulation
+
 app.post('/api/simulations/trigger', (req, res) => {
   const { scenarioId, targetNodeId } = req.body;
   totalSimulationsRun += 1;
 
-  // Calculate simulated attack impact
   let alertTitle = 'Simulated Cyber Attack Event';
   let severity = 'high';
   let mitreCode = 'T1110';
@@ -139,7 +136,7 @@ app.post('/api/simulations/trigger', (req, res) => {
     mitreName = 'Exploitation for Privilege Escalation';
   }
 
-  // Update target node if provided
+ 
   if (targetNodeId) {
     const node = activeNodes.find((n) => n.id === targetNodeId);
     if (node) {
@@ -167,7 +164,7 @@ app.post('/api/simulations/trigger', (req, res) => {
   });
 });
 
-// Gemini AI Incident Explanation & Forensic Analysis Endpoint
+
 app.post('/api/gemini/explain', async (req, res) => {
   const { incidentTitle, logExcerpt, targetNode, mitreCode, severity } = req.body;
 
